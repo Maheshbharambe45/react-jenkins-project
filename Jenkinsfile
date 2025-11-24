@@ -36,6 +36,29 @@ pipeline {
             }
         }
 
+        stage('building a docker image'){
+            steps{
+                sh '''
+                echo "Building Docker Image ----->"
+                docker build -t ${IMG_NAME}:latest .
+                '''                
+            }
+        }
+
+        stage('Push Image') {
+        steps {
+            withCredentials([usernamePassword(
+            credentialsId: 'docker-crediantials',
+            usernameVariable: 'MY_DOCKER_USER',
+            passwordVariable: 'MY_DOCKER_PASS'
+            )]) {
+            sh '''
+                echo "$MY_DOCKER_PASS" | docker login -u "$MY_DOCKER_USER" --password-stdin
+                docker push ${IMG_NAME}:latest
+            '''
+            }
+        }
+        }
 
     }
 }
