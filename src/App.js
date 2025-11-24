@@ -1,13 +1,14 @@
-import React from "react";
-import Counter from "./components/Counter";
+import React, { useState } from 'react';
 
 function App() {
-  return (
-    <div style={{ textAlign: "center", padding: "40px" }}>
-      <h1>React + Jenkins + Docker + Kubernetes</h1>
-      <p>CI/CD Pipeline Demo 🚀</p>
+  const [count, setCount] = useState(0);
 
-      <Counter />
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h1>Simple Counter App</h1>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      <button onClick={() => setCount(count - 1)}>Decrement</button>
     </div>
   );
 }

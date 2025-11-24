@@ -1,9 +1,12 @@
-import { render, screen } from "@testing-library/react";
-import App from "./App";
+import { render, screen, fireEvent } from '@testing-library/react';
+import App from './App';
 
-test("renders main CI/CD title", () => {
+test('renders counter and buttons', () => {
   render(<App />);
-  expect(
-    screen.getByText(/React \+ Jenkins \+ Docker \+ Kubernetes/i)
-  ).toBeInTheDocument();
+  const countText = screen.getByText(/Count:/i);
+  expect(countText).toBeInTheDocument();
+
+  const incrementButton = screen.getByText(/Increment/i);
+  fireEvent.click(incrementButton);
+  expect(screen.getByText(/Count: 1/i)).toBeInTheDocument();
 });
