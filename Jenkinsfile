@@ -61,29 +61,28 @@ pipeline {
         }
 
         stage("Deploy to Minikube on EC2") {
-        steps {
-            withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'ec2-ssh-key', keyFileVariable: 'SSH_KEY')]) {
 
-            sh """
-                scp -i "$SSH_KEY" -o StrictHostKeyChecking=no deployment.yaml service.yml \
-                ubuntu@${MINIKUBE_IP}:/home/ubuntu/
-            """
+                    sh '''
+                        scp -i "$SSH_KEY" -o StrictHostKeyChecking=no deployment.yaml service.yaml ubuntu@${MINIKUBE_IP}:/home/ubuntu/
+                    '''
 
+                    sh '''
+                        ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no ubuntu@${MINIKUBE_IP} '
+                        kubectl delete -f deployment.yaml --ignore-not-found=true
+                        kubectl delete -f service.yaml --ignore-not-found=true
 
-            sh """
-                ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no ubuntu@${MINIKUBE_IP} '
-                kubectl delete -f deployment.yaml --ignore-not-found=true
-                kubectl delete -f service.yml --ignore-not-found=true
+                        kubectl apply -f deployment.yaml
+                        kubectl apply -f service.yaml
 
-                kubectl apply -f deployment.yaml
-                kubectl apply -f service.yml
-
-                kubectl get pods -o wide
-                '
-            """
+                        kubectl get pods -o wide
+                        '
+                    '''
+                }
             }
         }
-        }
+
 
     }
 }
