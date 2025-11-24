@@ -21,9 +21,9 @@ pipeline {
             }
         }
 
-        stage('') {
+        stage('test some parameters') {
             steps {
-                echo "TEST "
+                echo "test"
                 sh 'npm test'  
             }
         }

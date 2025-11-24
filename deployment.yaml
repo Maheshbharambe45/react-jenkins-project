@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: my-react-app
-          image: my-react-app:latest
+          image: maheshbharambe45/react_img:latest
           ports:
             - containerPort: 5000
           resources:
