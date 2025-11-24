@@ -28,13 +28,13 @@ pipeline {
             }
         }
 
-        // stage('build the app') {
-        //     steps {
-        //         echo "app-build"
-        //         sh 'npm run build'
-        //         archiveArtifacts artifacts: 'build/**', fingerprint: true
-        //     }
-        // }
+        stage('build the app') {
+            steps {
+                echo "app-build"
+                sh 'npm run build'
+                archiveArtifacts artifacts: 'build/**', fingerprint: true
+            }
+        }
 
 
     }
